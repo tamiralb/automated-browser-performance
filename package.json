@@ -1,0 +1,24 @@
+{
+  "name": "automated-browser-performance",
+  "version": "1.0.0",
+  "description": "Automated browser performance testing for Instacart storefront",
+  "type": "module",
+  "scripts": {
+    "test": "tsx performance-test.ts",
+    "test:authenticated": "tsx performance-test-authenticated.ts",
+    "test:lighthouse": "lighthouse http://www.instacart.com.test:8081/store --output html --output-path ./reports/lighthouse-report.html",
+    "install-browsers": "playwright install chromium"
+  },
+  "keywords": ["performance", "testing", "playwright", "lighthouse"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.40.0",
+    "tsx": "^4.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "lighthouse": "^11.4.0",
+    "typescript": "^5.3.0"
+  }
+}
