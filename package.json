@@ -4,9 +4,20 @@
   "description": "Automated browser performance testing for Instacart storefront",
   "type": "module",
   "scripts": {
-    "test": "tsx performance-test.ts",
-    "test:authenticated": "tsx performance-test-authenticated.ts",
-    "test:lighthouse": "lighthouse http://www.instacart.com.test:8081/store --output html --output-path ./reports/lighthouse-report.html",
+    "test:retailer": "tsx tests/retailer-test.ts",
+    "test:retailer:auth": "tsx tests/retailer-test.ts -- --auth",
+    "test:retailer:cookies": "tsx tests/retailer-test.ts -- --cookies",
+    "test:retailer:list": "tsx tests/retailer-test.ts --list",
+    "test:retailer:all": "tsx tests/retailer-test.ts --all",
+    "test:retailer:all:auth": "tsx tests/retailer-test.ts --all --auth",
+    "test:graphql": "tsx tests/graphql-test.ts",
+    "test:volume": "tsx tests/volume-test.ts",
+    "test:brdata": "tsx tests/brdata-api-test.ts",
+    "test:brdata:all": "tsx tests/brdata-clients-test.ts",
+    "save-cookies": "tsx utils/save-cookies.ts",
+    "check-auth": "tsx utils/check-auth.ts",
+    "brdata:token": "tsx utils/get-brdata-token.ts",
+    "brdata:run": "tsx utils/run-brdata-from-env.ts",
     "install-browsers": "playwright install chromium"
   },
   "keywords": ["performance", "testing", "playwright", "lighthouse"],
@@ -14,7 +25,9 @@
   "license": "MIT",
   "dependencies": {
     "playwright": "^1.40.0",
-    "tsx": "^4.7.0"
+    "tsx": "^4.7.0",
+    "web-vitals": "^5.1.0",
+    "chrome-launcher": "^1.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

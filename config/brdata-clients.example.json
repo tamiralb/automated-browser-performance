@@ -1,0 +1,17 @@
+[
+  { "name": "blairs_market_sfp", "displayName": "Blairs Market SFP", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "67" },
+  { "name": "bowmans", "displayName": "Bowmans", "retailerId": 2450, "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "127" },
+  { "name": "bowmans_market_sfp", "displayName": "Bowmans Market SFP", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "127" },
+  { "name": "broulims_sfp", "displayName": "Broulims SFP", "retailerId": 2475, "storeConfigId": 1450, "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "32" },
+  { "name": "caper_clarks", "displayName": "Caper Clarks", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "587" },
+  { "name": "davis", "displayName": "Davis", "retailerId": 2451, "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "33" },
+  { "name": "davis_sfp", "displayName": "Davis SFP", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "33" },
+  { "name": "days_family_market_llc_sfp", "displayName": "Days Family Market LLC SFP", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "90" },
+  { "name": "digbys_market_sfp", "displayName": "Digbys Market SFP", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "522" },
+  { "name": "lees_marketplace_sfp", "displayName": "Lees Marketplace SFP", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "48" },
+  { "name": "petersons_fresh_market_sfp", "displayName": "Petersons Fresh Market SFP", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "71" },
+  { "name": "soelbergs", "displayName": "Soelbergs", "retailerId": 2452, "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "98" },
+  { "name": "soelbergs_market_sfp", "displayName": "Soelbergs Market SFP", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "98" },
+  { "name": "stewarts", "displayName": "Stewarts", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "68" },
+  { "name": "stewarts_marketplace_sfp", "displayName": "Stewarts Marketplace SFP", "clientId": "YOUR_CLIENT_ID", "secretKey": "YOUR_SECRET_KEY", "appId": "68" }
+]

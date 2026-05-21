@@ -10,3 +10,12 @@ build/
 .env.local
 playwright-report/
 test-results/
+
+# BRData credentials (use config/brdata-clients.example.json as template)
+config/brdata-clients.json
+
+# Authentication cookies
+*-cookies.json
+cookies-*.json
+*.cookies.json
+cookies/

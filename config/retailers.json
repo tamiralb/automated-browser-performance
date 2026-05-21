@@ -1,0 +1,86 @@
+{
+  "description": "List of retailer URLs for performance testing",
+  "retailers": [
+    {
+      "id": "davis-food-drug",
+      "name": "Davis Food & Drug",
+      "url": "https://shop.davisfoodanddrug.com/store/davis-food-drug/pages/in-store-deals"
+    },
+    {
+      "id": "broulims",
+      "name": "Broulim's Supermarket",
+      "url": "https://shop.broulims.com/store/broulims-supermarket/pages/in-store-deals"
+    },
+    {
+      "id": "bowmans",
+      "name": "Bowman's Market",
+      "url": "https://shop.bowmansmarket.com/store/bowmans-market/pages/in-store-deals"
+    },
+    {
+      "id": "digbys",
+      "name": "Digby's Market",
+      "url": "https://shop.digbysmarket.com/store/digbys-market/pages/in-store-deals"
+    },
+    {
+      "id": "petersons",
+      "name": "Peterson's Fresh Market",
+      "url": "https://shop.petersonsfreshmarket.com/store/peterson-s-fresh-market/pages/in-store-deals"
+    },
+    {
+      "id": "lees",
+      "name": "Lee's Marketplace",
+      "url": "https://shop.leesmarketplace.com/store/lees-marketplace/pages/in-store-deals"
+    },
+    {
+      "id": "dans",
+      "name": "Dan's Fresh Market",
+      "url": "https://shop.dansfoods.com/store/dans-fresh-market/pages/in-store-deals"
+    },
+    {
+      "id": "dicks",
+      "name": "Dick's Fresh Market",
+      "url": "https://shop.dicksmarket.com/store/dicks-fresh-market/pages/in-store-deals"
+    },
+    {
+      "id": "fresh-market",
+      "name": "Fresh Market",
+      "url": "https://shop.freshmarketstores.com/store/fresh-market/pages/in-store-deals"
+    },
+    {
+      "id": "lins",
+      "name": "Lin's Fresh Market",
+      "url": "https://shop.linsgrocery.com/store/lins-fresh-market/pages/in-store-deals"
+    },
+    {
+      "id": "maceys",
+      "name": "Macey's",
+      "url": "https://shop.maceys.com/store/maceys/pages/in-store-deals"
+    },
+    {
+      "id": "stewarts",
+      "name": "Stewart's Marketplace",
+      "url": "https://shop.stewartsmarketplace.com/store/stewarts-marketplace/pages/in-store-deals"
+    },
+    {
+      "id": "clarks",
+      "name": "Clark's Market",
+      "url": "https://shop.clarksmarket.com/store/clarks-market/pages/in-store-deals"
+    },
+    {
+      "id": "kents",
+      "name": "Kent's Market",
+      "url": "https://shop.kentsgrocery.com/store/kents-market/pages/in-store-deals"
+    },
+    {
+      "id": "soelbergs",
+      "name": "Soelberg's Market",
+      "url": "https://shop.soelbergsmarket.com/store/soelbergs-market/pages/in-store-deals"
+    },
+    {
+      "id": "blairs",
+      "name": "Blair's Market",
+      "url": "https://shop.blairsmarket.com/store/blairs-market/pages/in-store-deals"
+    }
+  ],
+  "defaultRetailer": "davis-food-drug"
+}

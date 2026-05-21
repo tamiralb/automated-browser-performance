@@ -11,6 +11,6 @@
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["**/*.ts"],
+  "include": ["lib/**/*.ts", "tests/**/*.ts", "utils/**/*.ts"],
   "exclude": ["node_modules"]
 }

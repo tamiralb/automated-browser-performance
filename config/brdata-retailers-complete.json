@@ -1,0 +1,160 @@
+[
+  {
+    "name": "blairs_market_sfp",
+    "displayName": "Blair's Market SFP",
+    "retailerId": 4370,
+    "storeConfigId": 1606,
+    "appId": "67",
+    "url": "https://shop.blairsmarket.com"
+  },
+  {
+    "name": "bowmans",
+    "displayName": "Bowman's Market (Marketplace)",
+    "retailerId": 2668,
+    "appId": "127"
+  },
+  {
+    "name": "bowmans_market_sfp",
+    "displayName": "Bowman's Market SFP",
+    "retailerId": 2668,
+    "storeConfigId": 1592,
+    "appId": "127",
+    "url": "https://shop.bowmansmarket.com"
+  },
+  {
+    "name": "broulims_sfp",
+    "displayName": "Broulim's SFP",
+    "retailerId": 2475,
+    "storeConfigId": 1450,
+    "appId": "32",
+    "url": "https://shop.broulims.com"
+  },
+  {
+    "name": "caper_clarks",
+    "displayName": "Clark's Market (Caper)",
+    "retailerId": 2168,
+    "storeConfigId": 1698,
+    "appId": "587",
+    "url": "https://shop.clarksmarket.com"
+  },
+  {
+    "name": "dans_fresh_market_sfp",
+    "displayName": "Dan's Fresh Market SFP",
+    "retailerId": 2085,
+    "storeConfigId": 1380,
+    "appId": null,
+    "url": "https://shop.dansfoods.com",
+    "notes": "No App ID in brdata-clients.example.json"
+  },
+  {
+    "name": "davis",
+    "displayName": "Davis Food & Drug (Marketplace/Caper)",
+    "retailerId": 2697,
+    "appId": "33"
+  },
+  {
+    "name": "davis_sfp",
+    "displayName": "Davis Food & Drug SFP",
+    "retailerId": 2697,
+    "storeConfigId": 1445,
+    "appId": "33",
+    "url": "https://shop.davisfoodanddrug.com"
+  },
+  {
+    "name": "dicks_fresh_market_sfp",
+    "displayName": "Dick's Fresh Market SFP",
+    "retailerId": 2087,
+    "storeConfigId": 1402,
+    "appId": null,
+    "url": "https://shop.dicksmarket.com",
+    "notes": "No App ID in brdata-clients.example.json"
+  },
+  {
+    "name": "digbys_market_sfp",
+    "displayName": "Digby's Market SFP",
+    "retailerId": 2525,
+    "storeConfigId": 1589,
+    "appId": "522",
+    "url": "https://shop.digbysmarket.com"
+  },
+  {
+    "name": "fresh_market_sfp",
+    "displayName": "Fresh Market SFP",
+    "retailerId": 2088,
+    "storeConfigId": 1403,
+    "appId": null,
+    "url": "https://shop.freshmarketstores.com",
+    "notes": "No App ID in brdata-clients.example.json"
+  },
+  {
+    "name": "kents_market_sfp",
+    "displayName": "Kent's Market SFP",
+    "retailerId": null,
+    "storeConfigId": null,
+    "appId": null,
+    "url": "https://shop.kentsgrocery.com",
+    "notes": "NO CONFIG FILE FOUND - Not yet configured for BRData"
+  },
+  {
+    "name": "lees_marketplace_sfp",
+    "displayName": "Lee's Marketplace SFP",
+    "retailerId": 1310,
+    "storeConfigId": 1597,
+    "appId": "48",
+    "url": "https://shop.leesmarketplace.com"
+  },
+  {
+    "name": "lins_fresh_market_sfp",
+    "displayName": "Lin's Fresh Market SFP",
+    "retailerId": 2086,
+    "storeConfigId": 1404,
+    "appId": null,
+    "url": "https://shop.linsgrocery.com",
+    "notes": "No App ID in brdata-clients.example.json"
+  },
+  {
+    "name": "maceys_sfp",
+    "displayName": "Macey's SFP",
+    "retailerId": 2084,
+    "storeConfigId": 1384,
+    "appId": "33",
+    "url": "https://shop.maceys.com"
+  },
+  {
+    "name": "petersons_fresh_market_sfp",
+    "displayName": "Peterson's Fresh Market SFP",
+    "retailerId": 2467,
+    "storeConfigId": 1596,
+    "appId": "71",
+    "url": "https://shop.petersonsfreshmarket.com"
+  },
+  {
+    "name": "soelbergs",
+    "displayName": "Soelberg's Market (Marketplace)",
+    "retailerId": 2461,
+    "appId": "98"
+  },
+  {
+    "name": "soelbergs_market_sfp",
+    "displayName": "Soelberg's Market SFP",
+    "retailerId": 2461,
+    "storeConfigId": 1598,
+    "appId": "98",
+    "url": "https://shop.soelbergsmarket.com"
+  },
+  {
+    "name": "stewarts",
+    "displayName": "Stewart's Marketplace (Marketplace)",
+    "retailerId": 2823,
+    "storeConfigId": 1550,
+    "appId": "68"
+  },
+  {
+    "name": "stewarts_marketplace_sfp",
+    "displayName": "Stewart's Marketplace SFP",
+    "retailerId": 2823,
+    "storeConfigId": 1489,
+    "appId": "68",
+    "url": "https://shop.stewartsmarketplace.com"
+  }
+]

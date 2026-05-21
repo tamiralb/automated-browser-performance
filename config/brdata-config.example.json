@@ -1,0 +1,62 @@
+{
+  "comment": "BRData API Test Configuration Example",
+  "description": "Copy this file to brdata-config.json and fill in your credentials",
+
+  "production": {
+    "appId": "33",
+    "customerNum": "1234567890",
+    "bearerToken": "<your-bearer-token>",
+    "baseUrl": "https://webservices.brdata.com"
+  },
+
+  "staging": {
+    "appId": "33",
+    "customerNum": "1234567890",
+    "bearerToken": "<your-bearer-token>",
+    "baseUrl": "https://staging.brdata.com"
+  },
+
+  "retailers": {
+    "maceys_sfp": {
+      "appId": "33",
+      "retailerId": "2084",
+      "storeConfigurationId": "1384",
+      "notes": "Maceys SFP"
+    },
+    "soelbergs": {
+      "appId": "33",
+      "retailerId": "2461",
+      "notes": "Soelbergs"
+    }
+  },
+
+  "testScenarios": {
+    "quick": {
+      "description": "Quick single request test",
+      "command": "npm run test:brdata -- --appId 33 --customerNum 1234567890 --token <token>"
+    },
+    "consistency": {
+      "description": "Test consistency with 10 sequential requests",
+      "command": "npm run test:brdata -- --appId 33 --customerNum 1234567890 --token <token> --count 10"
+    },
+    "light_load": {
+      "description": "Light load test (50 requests, 5 concurrent)",
+      "command": "npm run test:brdata -- --appId 33 --customerNum 1234567890 --token <token> --volume 50 --concurrency 5"
+    },
+    "moderate_load": {
+      "description": "Moderate load test (100 requests, 10 concurrent)",
+      "command": "npm run test:brdata -- --appId 33 --customerNum 1234567890 --token <token> --volume 100 --concurrency 10"
+    },
+    "heavy_load": {
+      "description": "Heavy load test (500 requests, 20 concurrent)",
+      "command": "npm run test:brdata -- --appId 33 --customerNum 1234567890 --token <token> --volume 500 --concurrency 20"
+    }
+  },
+
+  "notes": [
+    "DO NOT commit this file with real credentials",
+    "Add brdata-config.json to .gitignore",
+    "Bearer tokens expire after 29 days",
+    "To get a new token, call /api/loyalty/token with proper HMAC signature"
+  ]
+}
