@@ -1,470 +1,212 @@
 # Automated Browser Performance Testing
 
-**Comprehensive performance testing suite** for Instacart storefront with three advanced testing methods:
-- **Web Vitals**: Core Web Vitals monitoring (LCP, FID, CLS, INP, TTFB, FCP)
-- **Lighthouse**: Programmatic Lighthouse audits with authentication
-- **Resource Timing**: Network & resource performance analysis
-
-All tests support authentication and can be run individually or as a unified comprehensive suite.
-
-🛒 **[Test Any of 16 Retailers](./RETAILER-TESTING.md)** - Performance test any configured retailer site with one command.
-
-📖 **[Read the Complete Usage Guide](./USAGE-GUIDE.md)** for in-depth explanations, examples, and troubleshooting.
-
-🔍 **[GraphQL Operations Testing](./GRAPHQL-TESTING.md)** - Track specific GraphQL operations like `FindOffersForUserV2`.
+Performance testing suite for retailer storefronts (Instacart-powered) using Playwright. Supports browser-based metrics collection, GraphQL operation tracking, volume/soak testing, and direct BRData API testing.
 
 ## Prerequisites
 
-- **Bento environment running**: Ensure `customers/proxy` is running on port 8081
-  ```bash
-  bento status customers/proxy
-  bento start customers/proxy  # if not running
-  ```
-
-- **Node.js**: Version 18+ recommended
-
-## Setup
+- Node.js 18+
+- Chromium (installed via Playwright)
 
 ```bash
-cd ~/code/automated-browser-performance
-
-# Install dependencies
 npm install
-
-# Install Playwright browsers
 npm run install-browsers
 ```
 
-## Running Tests
+## Tests
 
-### Comprehensive Test Suite (Recommended)
+### Retailer Performance Test
 
-Run all three testing methods in a single test:
-
-```bash
-npm run test:comprehensive
-```
-
-This executes:
-1. Web Vitals monitoring (LCP, FID, CLS, INP, TTFB, FCP)
-2. Resource Timing & Network Analysis
-3. Lighthouse programmatic audit
-
-Generates a unified HTML dashboard and JSON reports.
-
----
-
-### Retailer Testing (NEW!)
-
-Test any of 16 configured retailer sites:
+Runs a full performance audit (Web Vitals, Resource Timing, Lighthouse) on any configured retailer.
 
 ```bash
 # List available retailers
 npm run test:retailer:list
 
-# Test a specific retailer (public pages)
+# Test a specific retailer (public, no auth)
 npm run test:retailer davis-food-drug
 
-# Test with manual authentication
-npm run test:retailer davis-food-drug --auth
+# Test with manual browser login
+npm run test:retailer:auth davis-food-drug
 
-# Test with saved cookies (fully automated)
-npx tsx test-retailer.ts davis-food-drug --cookies cookies/davis.json
+# Test with saved cookies (automated)
+npm run test:retailer:cookies davis-food-drug -- --cookies cookies/davis.json
 
-# Test all retailers (generates comparison report)
+# Test all 16 retailers and generate a comparison report
 npm run test:retailer:all
 ```
 
 **Available retailers:** Davis Food & Drug, Broulim's, Bowman's, Digby's, Peterson's, Lee's, Dan's, Dick's, Fresh Market, Lin's, Macey's, Stewart's, Clark's, Kent's, Soelberg's, Blair's
 
-📖 **[See Retailer Testing Guide](./RETAILER-TESTING.md)** for complete details.
-🔐 **[See Authentication Guide](./AUTHENTICATION-GUIDE.md)** for manual login instructions.
-🍪 **[See Cookie Guide](./COOKIE-GUIDE.md)** for saving cookies and automated authenticated testing.
+Retailer URLs are configured in [`config/retailers.json`](config/retailers.json).
 
 ---
 
-### GraphQL Operations Testing (NEW!)
+### GraphQL Operations Test
 
-Track specific GraphQL operations and their performance:
+Intercepts and profiles all GraphQL operations fired during a page load. Useful for tracking specific operations like `FindOffersForUserV2`.
 
 ```bash
-# Track FindOffersForUserV2 operation
-npx tsx graphql-test.ts https://shop.davisfoodanddrug.com/store/davis-food-drug/pages/in-store-deals
+npm run test:graphql -- https://shop.davisfoodanddrug.com/store/davis-food-drug/pages/in-store-deals
 ```
 
-**Reports:**
-- Duration of `FindOffersForUserV2`
-- Response size and status
-- All GraphQL operations on the page
-- Performance assessment (good/fair/slow)
-
-🔍 **[See GraphQL Testing Guide](./GRAPHQL-TESTING.md)** for complete details.
+Optionally pass a cookie file for authenticated runs:
+```bash
+npm run test:graphql -- <url> --cookies cookies/davis.json
+```
 
 ---
 
-### Individual Test Methods
+### Volume / Soak Test
 
-#### Web Vitals Test
-
-Monitors Google's Core Web Vitals metrics:
+Opens multiple concurrent browser instances repeatedly loading a URL. Useful for measuring GraphQL performance under load.
 
 ```bash
-npm run test:web-vitals
+npm run test:volume -- <url> --cookies <cookie-file> --browsers 10 --duration 60
 ```
 
-**Metrics Collected:**
-- Largest Contentful Paint (LCP)
-- First Input Delay (FID)
-- Cumulative Layout Shift (CLS)
-- Interaction to Next Paint (INP)
-- Time to First Byte (TTFB)
-- First Contentful Paint (FCP)
-
-#### Lighthouse Test
-
-Programmatic Lighthouse audit with authentication:
-
-```bash
-npm run test:lighthouse
-```
-
-**Metrics Collected:**
-- Performance Score (0-100)
-- First Contentful Paint (FCP)
-- Largest Contentful Paint (LCP)
-- Time to Interactive (TTI)
-- Total Blocking Time (TBT)
-- Cumulative Layout Shift (CLS)
-- Speed Index
-
-#### Resource Timing Test
-
-Network and resource performance analysis:
-
-```bash
-npm run test:resource-timing
-```
-
-**Analysis Includes:**
-- Resource categorization (scripts, styles, images, fonts, XHR)
-- Render-blocking resource detection
-- Slowest resources (top 10)
-- Compression analysis
-- Total transfer size breakdown
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--browsers` | 5 | Number of concurrent browser instances |
+| `--duration` | 60 | Test duration in seconds (0 = infinite) |
+| `--cookies` | — | Path to cookie file for authenticated runs |
 
 ---
 
-### Legacy Tests
+### BRData API Test
 
-#### Basic Performance Test (No Authentication)
-
-```bash
-npm test
-```
-
-#### Authenticated Performance Test
+Directly tests the BRData "Get Coupons for Customer" API endpoint. No browser required.
 
 ```bash
-npm run test:authenticated
+# Single request
+npm run test:brdata -- --appId 33 --customerNum 1234567890 --token <token>
+
+# Sequential requests (consistency check)
+npm run test:brdata -- --appId 33 --customerNum 1234567890 --token <token> --count 10
+
+# Volume test (concurrent requests)
+npm run test:brdata -- --appId 33 --customerNum 1234567890 --token <token> --volume 100 --concurrency 10
 ```
 
-#### Lighthouse CLI Test
+See [`config/brdata-config.example.json`](config/brdata-config.example.json) for all options. Copy it to `config/brdata-config.json` and fill in your credentials (this file is gitignored).
+
+#### Getting a BRData Token
 
 ```bash
-npm run test:lighthouse-cli
+npm run brdata:token
 ```
 
-### Custom Configuration
+Or run with env vars directly:
+```bash
+npm run brdata:run
+```
 
-#### Environment Variables
+---
+
+### BRData Multi-Client Test
+
+Tests BRData across all configured retailer clients in one run.
 
 ```bash
-# Use different base URL
-BASE_URL=http://www.instacart.com.test:8081 npm run test:comprehensive
-
-# Use different test account
-EMAIL=your-test@instacart.com VERIFICATION_CODE=123456 npm run test:comprehensive
+npm run test:brdata:all
 ```
 
-#### Performance Budgets
+Client configuration lives in [`config/brdata-clients.example.json`](config/brdata-clients.example.json). Copy to `config/brdata-clients.json` and add your credentials.
 
-Modify `performance-budgets.json` to customize thresholds for your project:
+---
 
-```json
-{
-  "webVitals": {
-    "lcp": {
-      "good": 2500,
-      "needsImprovement": 4000
-    }
-  },
-  "lighthouse": {
-    "performanceScore": {
-      "good": 90,
-      "needsImprovement": 50
-    }
-  },
-  "resourceTiming": {
-    "totalResources": {
-      "target": 150,
-      "warn": 200,
-      "critical": 300
-    }
-  }
-}
+## Authentication
+
+### Save Cookies (one-time setup)
+
+Opens a browser, lets you log in manually, then saves the session cookies to a file for reuse in automated runs.
+
+```bash
+npm run save-cookies -- https://shop.davisfoodanddrug.com cookies/davis.json
 ```
 
-## Test Credentials (Local/Bento Only)
+### Check Auth Status
 
-**Default test account:**
-- Email: `anvar.gazizov@instacart.com`
-- Verification Code: `671415`
-- Base URL: `http://www.instacart.com.test:8081`
+```bash
+npm run check-auth -- cookies/davis.json
+```
 
-⚠️ **Note**: The verification code `671415` is a static test code that only works in local/bento environments.
-
-## Performance Budgets
-
-All performance budgets are configured in `performance-budgets.json` and follow Google's recommended thresholds.
-
-### Web Vitals Thresholds
-
-| Metric | Good | Needs Improvement | Poor |
-|--------|------|-------------------|------|
-| **LCP** | ≤2500ms | ≤4000ms | >4000ms |
-| **FID** | ≤100ms | ≤300ms | >300ms |
-| **CLS** | ≤0.1 | ≤0.25 | >0.25 |
-| **INP** | ≤200ms | ≤500ms | >500ms |
-| **TTFB** | ≤800ms | ≤1800ms | >1800ms |
-| **FCP** | ≤1800ms | ≤3000ms | >3000ms |
-
-### Lighthouse Thresholds
-
-| Metric | Good | Needs Improvement | Poor |
-|--------|------|-------------------|------|
-| **Performance Score** | ≥90 | ≥50 | <50 |
-| **FCP** | ≤1800ms | ≤3000ms | >3000ms |
-| **LCP** | ≤2500ms | ≤4000ms | >4000ms |
-| **TTI** | ≤3800ms | ≤7300ms | >7300ms |
-| **TBT** | ≤200ms | ≤600ms | >600ms |
-| **CLS** | ≤0.1 | ≤0.25 | >0.25 |
-
-### Resource Timing Thresholds
-
-| Metric | Target | Warning | Critical |
-|--------|--------|---------|----------|
-| **Total Resources** | ≤150 | ≤200 | >300 |
-| **Total Transfer Size** | ≤2MB | ≤3MB | >5MB |
-| **Total Script Size** | ≤800KB | ≤1.2MB | >2MB |
-| **Render-Blocking** | ≤5 | ≤10 | >20 |
-| **Slow Resources** | ≤5 | ≤10 | >20 |
-
-## What Gets Measured
-
-### Web Vitals (Method 2)
-- **LCP**: Largest Contentful Paint - measures loading performance
-- **FID**: First Input Delay - measures interactivity
-- **CLS**: Cumulative Layout Shift - measures visual stability
-- **INP**: Interaction to Next Paint - measures responsiveness
-- **TTFB**: Time to First Byte - measures server response time
-- **FCP**: First Contentful Paint - measures initial render
-
-### Lighthouse Audit (Method 3)
-- **Performance Score**: Overall performance rating (0-100)
-- **FCP**: First Contentful Paint
-- **LCP**: Largest Contentful Paint
-- **TTI**: Time to Interactive
-- **TBT**: Total Blocking Time - measures main thread blocking
-- **CLS**: Cumulative Layout Shift
-- **Speed Index**: Measures how quickly content is visually displayed
-
-### Resource Timing (Method 4)
-- **Resource Categorization**: Scripts, stylesheets, images, fonts, XHR, fetch
-- **Aggregate Metrics**: Count, total size, total duration per category
-- **Bottleneck Detection**:
-  - Top 10 slowest resources
-  - Render-blocking resources
-  - Large resources (>500KB)
-- **Compression Analysis**: Encoded vs decoded size comparison
-- **Network Performance**: Transfer sizes, timing breakdowns
-
-### Legacy Tests
-- ⏱️ Total page load time
-- 📦 HTML size (compressed & uncompressed)
-- 🗜️ Compression ratio
-- 📜 Script count (total & blocking)
-- ⚡ First Paint timing
-- 📊 DOM Content Loaded timing
+---
 
 ## File Structure
 
 ```
-automated-browser-performance/
-├── package.json                         # Dependencies and scripts
-├── performance-budgets.json             # Performance threshold configuration
-├── auth.ts                              # Shared authentication logic
-├── lib/                                 # Shared utilities
-│   ├── metrics-types.ts                 # TypeScript interfaces
-│   ├── web-vitals-collector.ts          # Web Vitals collection
-│   ├── resource-analyzer.ts             # Resource Timing analysis
-│   ├── lighthouse-runner.ts             # Lighthouse programmatic API
-│   └── report-generator.ts              # Unified reporting (console, JSON, HTML)
-├── web-vitals-test.ts                   # Web Vitals standalone test
-├── lighthouse-test.ts                   # Lighthouse standalone test
-├── resource-timing-test.ts              # Resource Timing standalone test
-├── comprehensive-test.ts                # Unified test runner (all 3 methods)
-├── performance-test.ts                  # Legacy: Basic test (no auth)
-├── performance-test-authenticated.ts    # Legacy: Full test with login
-├── README.md                            # This file
-└── reports/                             # Generated reports (gitignored)
-    ├── comprehensive-report.html        # Unified HTML dashboard
-    ├── comprehensive-report.json        # Unified JSON report
-    ├── web-vitals-report.json           # Web Vitals metrics
-    ├── resource-timing-report.json      # Resource Timing metrics
-    ├── lighthouse-report.json           # Lighthouse metrics
-    └── lighthouse-report.html           # Lighthouse HTML report
+├── tests/
+│   ├── retailer-test.ts         # Browser perf test for any configured retailer
+│   ├── graphql-test.ts          # GraphQL operation interceptor & profiler
+│   ├── volume-test.ts           # Concurrent browser soak test
+│   ├── brdata-api-test.ts       # BRData API performance test
+│   └── brdata-clients-test.ts   # BRData multi-client test
+├── lib/
+│   ├── web-vitals-collector.ts  # Core Web Vitals (LCP, FID, CLS, INP, TTFB, FCP)
+│   ├── resource-analyzer.ts     # Resource Timing API analysis
+│   ├── lighthouse-runner.ts     # Programmatic Lighthouse
+│   ├── graphql-analyzer.ts      # GraphQL interception & analysis
+│   ├── api-tester.ts            # BRData HTTP client & concurrency helpers
+│   ├── cookie-auth.ts           # Cookie save/load utilities
+│   ├── report-generator.ts      # Console, JSON, and HTML report output
+│   └── metrics-types.ts         # Shared TypeScript interfaces
+├── utils/
+│   ├── save-cookies.ts          # Interactive cookie saver
+│   ├── check-auth.ts            # Validate a saved cookie file
+│   ├── get-brdata-token.ts      # Fetch a BRData bearer token
+│   └── run-brdata-from-env.ts   # Run BRData test from env vars
+├── config/
+│   ├── retailers.json           # Retailer IDs and URLs
+│   ├── performance-budgets.json # Performance thresholds
+│   ├── brdata-config.example.json
+│   └── brdata-clients.example.json
+├── scripts/
+│   ├── test-broulims.sh
+│   ├── test-all-brdata-clients.sh
+│   └── run-brdata-test-interactive.sh
+└── cookies/                     # Saved cookie files (gitignored)
 ```
 
-## Architecture
+## Performance Budgets
 
-The testing suite follows a **modular architecture** with shared utilities:
+Thresholds are defined in [`config/performance-budgets.json`](config/performance-budgets.json).
 
-### Shared Components
-- **`auth.ts`**: Single authentication implementation reused by all tests
-- **`lib/metrics-types.ts`**: TypeScript interfaces for type safety across the suite
-- **`lib/report-generator.ts`**: Unified reporting for consistent output formats
-- **`performance-budgets.json`**: Centralized threshold configuration
+### Web Vitals
 
-### Individual Test Methods
-Each testing method is self-contained and can run independently:
+| Metric | Good | Needs Improvement | Poor |
+|--------|------|-------------------|------|
+| LCP | ≤2500ms | ≤4000ms | >4000ms |
+| FID | ≤100ms | ≤300ms | >300ms |
+| CLS | ≤0.1 | ≤0.25 | >0.25 |
+| INP | ≤200ms | ≤500ms | >500ms |
+| TTFB | ≤800ms | ≤1800ms | >1800ms |
+| FCP | ≤1800ms | ≤3000ms | >3000ms |
 
-1. **Web Vitals** (`web-vitals-test.ts`): Injects the `web-vitals` library into the page context, simulates user interactions to trigger FID/INP, and collects all Core Web Vitals metrics.
+### Resource Timing
 
-2. **Lighthouse** (`lighthouse-test.ts`): Launches a separate Chrome instance with debugging port, authenticates via Playwright to extract cookies, runs Lighthouse programmatically with cookies injected.
+| Metric | Target | Warning | Critical |
+|--------|--------|---------|----------|
+| Total resources | ≤150 | ≤200 | >300 |
+| Total transfer size | ≤2MB | ≤3MB | >5MB |
+| Total script size | ≤800KB | ≤1.2MB | >2MB |
+| Render-blocking | ≤5 | ≤10 | >20 |
 
-3. **Resource Timing** (`resource-timing-test.ts`): Uses browser's native Resource Timing API to analyze all network requests, categorizes resources, and identifies performance bottlenecks.
+## Reports
 
-### Comprehensive Suite
-The comprehensive test (`comprehensive-test.ts`) orchestrates all three methods efficiently:
-- Authenticates once with Playwright
-- Runs Web Vitals and Resource Timing in the same session
-- Runs Lighthouse in a separate Chrome instance (required for accurate Lighthouse results)
-- Generates unified reports combining all metrics
+Test runs write output to `reports/` (gitignored):
+- `reports/*.html` — HTML dashboard
+- `reports/*.json` — structured metrics for CI consumption
 
-## Troubleshooting
+## CI Integration
 
-### "Failed to launch chromium"
-```bash
-npm run install-browsers
-```
-
-### "Navigation timeout"
-Ensure bento proxy is running:
-```bash
-bento restart customers/proxy
-```
-
-### "Login failed"
-Verify you're using the correct test credentials for your environment.
-
-### Port 8081 not accessible
-Check if the store service is running:
-```bash
-bento status customers/proxy
-ss -tlnp | grep 8081
-```
-
-## CI/CD Integration
-
-All tests return structured metrics and exit with code 1 if any metric is in "poor" status, making them suitable for CI/CD pipelines.
-
-### Example CI Integration
+All tests exit with code `1` if any metric is in "poor" status, making them drop-in CI gates.
 
 ```yaml
-# .github/workflows/performance.yml
-name: Performance Tests
-
-on: [push, pull_request]
-
-jobs:
-  performance:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Install browsers
-        run: npm run install-browsers
-
-      - name: Start bento
-        run: bento start customers/proxy
-
-      - name: Run comprehensive performance test
-        run: npm run test:comprehensive
-
-      - name: Upload reports
-        uses: actions/upload-artifact@v3
-        with:
-          name: performance-reports
-          path: reports/
+- name: Run retailer performance test
+  run: npm run test:retailer davis-food-drug
+- name: Upload reports
+  uses: actions/upload-artifact@v3
+  with:
+    name: perf-reports
+    path: reports/
 ```
-
-### Programmatic Usage
-
-```typescript
-import { runWebVitalsCollection } from './lib/web-vitals-collector.js'
-import { analyzeResourceTiming } from './lib/resource-analyzer.js'
-import { runLighthouse } from './lib/lighthouse-runner.js'
-
-// Run individual tests programmatically
-const webVitalsResult = await runWebVitalsCollection(page, url)
-const resourceTimingResult = await analyzeResourceTiming(page, budgets.resourceTiming)
-const lighthouseResult = await runLighthouse({ url, authenticate: true, loginFn, budgets })
-
-// Check for failures
-if (!webVitalsResult.success) {
-  console.error('Web Vitals test failed:', webVitalsResult.summary)
-  process.exit(1)
-}
-```
-
-### JSON Output Format
-
-All tests generate structured JSON reports in `reports/` that can be consumed by monitoring tools:
-
-```json
-{
-  "testType": "web-vitals",
-  "timestamp": "2026-03-04T14:30:00.000Z",
-  "success": true,
-  "metrics": {
-    "lcp": 2341,
-    "fid": 87,
-    "cls": 0.08,
-    "inp": 156,
-    "ttfb": 623,
-    "fcp": 1654
-  },
-  "evaluations": [...],
-  "summary": {
-    "good": 5,
-    "needsImprovement": 1,
-    "poor": 0
-  }
-}
-```
-
-## Related Documentation
-
-- [Store Performance Test Plan](../carrot/customers/store/client/crossRetailerExperience/docs/projects/performance-analysis/home/TEST-PLAN.md)
-- [Monitoring Strategy](../carrot/customers/store/client/crossRetailerExperience/docs/projects/performance-analysis/home/MONITORING-STRATEGY.md)
-- [Web Vitals Implementation](../carrot/customers/store/client/store/platform/shared/performance/WebVitals.tsx)
-
-## License
-
-MIT
