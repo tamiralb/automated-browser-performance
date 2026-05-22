@@ -16,6 +16,11 @@
     "test:brdata:all": "tsx tests/brdata-clients-test.ts",
     "save-cookies": "tsx utils/save-cookies.ts",
     "check-auth": "tsx utils/check-auth.ts",
+    "deals:clip": "tsx utils/clip-coupons.ts",
+    "deals:add": "tsx utils/add-coupon-products.ts",
+    "deals:workflow": "tsx utils/deals-workflow.ts",
+    "lins:workflow": "tsx utils/deals-workflow.ts --retailer lins",
+    "maceys:workflow": "tsx utils/deals-workflow.ts --retailer maceys",
     "brdata:token": "tsx utils/get-brdata-token.ts",
     "brdata:run": "tsx utils/run-brdata-from-env.ts",
     "install-browsers": "playwright install chromium"

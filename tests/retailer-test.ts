@@ -182,11 +182,14 @@ async function testRetailer(
   const webVitalsResult = await runWebVitalsCollection(page, retailer.url)
   console.log('✅ Web Vitals test complete\n')
 
-  // Phase 2: Resource Timing
+  // Phase 2: Resource Timing (fresh page to avoid stale context from web vitals phase)
   console.log('📦 Running Resource Timing analysis...')
-  await page.goto(retailer.url, { waitUntil: 'load', timeout: 90000 })
-  await page.waitForTimeout(3000) // Wait for additional resources to load
-  const resourceTimingResult = await analyzeResourceTiming(page, budgets.resourceTiming)
+  const resourcePage = await context.newPage()
+  await resourcePage.goto(retailer.url, { waitUntil: 'load', timeout: 90000 })
+  await resourcePage.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {})
+  await resourcePage.waitForTimeout(2000)
+  const resourceTimingResult = await analyzeResourceTiming(resourcePage, budgets.resourceTiming)
+  await resourcePage.close()
   console.log('✅ Resource Timing analysis complete\n')
 
   await browser.close()

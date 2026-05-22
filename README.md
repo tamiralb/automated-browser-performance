@@ -124,10 +124,96 @@ Opens a browser, lets you log in manually, then saves the session cookies to a f
 npm run save-cookies -- https://shop.davisfoodanddrug.com cookies/davis.json
 ```
 
+Add `--auto` to skip the "press ENTER" prompt — instead the cookies are saved automatically when you close the browser window:
+
+```bash
+npx tsx utils/save-cookies.ts https://shop.maceys.com cookies/maceys.json --auto
+```
+
 ### Check Auth Status
 
 ```bash
 npm run check-auth -- cookies/davis.json
+```
+
+---
+
+## In-Store Deals Automation
+
+Clip every available coupon on a retailer's deals page, then add every matching product to your cart. Works on all 16 configured retailers (same Instacart-powered storefront platform).
+
+### Quick start
+
+```bash
+# 1) Save cookies once (logs into the retailer in a browser)
+npx tsx utils/save-cookies.ts https://shop.maceys.com cookies/maceys.json --auto
+
+# 2) Run the full workflow (clip + add in one browser session)
+npm run deals:workflow -- --retailer maceys
+
+# Or just one phase
+npm run deals:clip -- --retailer maceys
+npm run deals:add  -- --retailer maceys
+```
+
+The `--retailer <id>` flag auto-derives every other path:
+
+| Flag | Auto-resolves to |
+|---|---|
+| `--retailer maceys` | URL from `config/retailers.json` |
+| | Cookies → `cookies/maceys.json` |
+| | State (resume) → `reports/maceys-state.json` |
+| | Report → `reports/maceys-added.csv` |
+
+Override any of those with `--cookies`, `--state`, or `--report`. Add `--headless` to run without a visible browser.
+
+Convenience shortcuts (no `--retailer` flag needed):
+
+```bash
+npm run lins:workflow      # Lin's Fresh Market
+npm run maceys:workflow    # Macey's
+```
+
+### Features
+
+| Feature | How |
+|---|---|
+| **Resume after crash** | State saved to JSON after every coupon — re-run picks up where it stopped |
+| **Cookie freshness check** | Warns on startup if cookies are expired |
+| **Headless mode** | Pass `--headless` to any script |
+| **Skip phases** | `--skip-clip` or `--skip-add` on the workflow script |
+| **CSV report** | `reports/<retailer>-added.csv` with every product added |
+| **Skip tracking** | Coupons with no Add buttons (out of stock) tracked separately in state |
+
+### Supported retailers
+
+All 16 retailers in `config/retailers.json` work out of the box:
+
+`blairs`, `bowmans`, `broulims`, `clarks`, `dans`, `davis-food-drug`, `dicks`, `digbys`, `fresh-market`, `kents`, `lees`, `lins`, `maceys`, `petersons`, `soelbergs`, `stewarts`
+
+### Example output
+
+```
+🛒 [Macey's] navigating to in-store deals (headed)...
+✅ Logged in
+
+━━━ Phase 1: clipping coupons ━━━
+Round 1: 30 unclipped coupons
+...
+✅ Clipped 287 total
+
+━━━ Phase 2: adding products ━━━
+  🎫 Save $1Save $1.00Expires in 2 days
+     +2 (total 2)
+  🎫 Save $3Save $3.00Expires in 2 days
+     +1 (total 3)
+...
+
+━━━ [Macey's] Summary ━━━
+  Clipped:  +287 (total 287)
+  Added:    +542 (total 542)
+  Coupons processed: 287
+  Skipped (no Add buttons): 18
 ```
 
 ---
@@ -148,11 +234,15 @@ npm run check-auth -- cookies/davis.json
 │   ├── graphql-analyzer.ts      # GraphQL interception & analysis
 │   ├── api-tester.ts            # BRData HTTP client & concurrency helpers
 │   ├── cookie-auth.ts           # Cookie save/load utilities
+│   ├── deals-automation.ts      # Shared deals workflow (retailer lookup, state, reports)
 │   ├── report-generator.ts      # Console, JSON, and HTML report output
 │   └── metrics-types.ts         # Shared TypeScript interfaces
 ├── utils/
 │   ├── save-cookies.ts          # Interactive cookie saver
 │   ├── check-auth.ts            # Validate a saved cookie file
+│   ├── clip-coupons.ts          # Clip every available coupon on deals page
+│   ├── add-coupon-products.ts   # Add every clipped coupon's products to cart
+│   ├── deals-workflow.ts        # Clip + add in one browser session
 │   ├── get-brdata-token.ts      # Fetch a BRData bearer token
 │   └── run-brdata-from-env.ts   # Run BRData test from env vars
 ├── config/
